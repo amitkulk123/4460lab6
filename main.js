@@ -10,17 +10,15 @@ d3.csv("datasets/TransportationFatalities_ByYear_postoncanvas.csv", function (cs
         return row.Year;
     });
 
-    var bicyclesExtent = d3.extent(csv, function (row) {
-        return row.Bicycle;
-    }); 
-    var trucksExtent = d3.extent(csv, function (row) {
-        return row.Trucks;
+    var carExtent = d3.extent(csv, function (row) {
+        return row.Car_Occupant;
     });
+
 
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Axis setup
     var xScale = d3.scaleLinear().domain(yearExtent).range([50, 470]);
-    var yScale = d3.scaleLinear().domain(bicyclesExtent).range([470, 30]);
+    var yScale = d3.scaleLinear().domain(carExtent).range([470, 30]);
     var xAxis = d3.axisBottom().scale(xScale);
     var yAxis = d3.axisLeft().scale(yScale);
 
@@ -39,7 +37,7 @@ d3.csv("datasets/TransportationFatalities_ByYear_postoncanvas.csv", function (cs
     // .attr("x", width/2)
     // .attr("y", 12)
     // .attr("font-size", "12px")
-    // .text("Fat vs Carb");
+    // .text("Fat vs Carb"); 
 
     chart1 // or something else that selects the SVG element in your visualizations
     .append("g") // create a group node
@@ -59,4 +57,15 @@ d3.csv("datasets/TransportationFatalities_ByYear_postoncanvas.csv", function (cs
     .attr("y", 6)
     .attr("dy", ".71em")
     .style("text-anchor", "end");
+
+    // append the data points for car to the chart 
+    chart1.selectAll("circle")
+    .data(csv)
+    .enter()
+    .append("circle")
+    .attr("cx", function (d) {
+        return xScale(d.Year);
+    })
 });
+
+// Create an update function for the axis that will scale the axis based on the data

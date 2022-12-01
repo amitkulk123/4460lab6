@@ -19,9 +19,9 @@ body {
     stroke: black;
 } */
 
-/* #wrapper {
+#wrapper {
     clear:both;
-} */
+}
 #chart1 {
     float: left;
 }
@@ -30,7 +30,12 @@ body {
     margin-top: 30px;
     margin-left: 20px;
 }
-/* #chart3 {
+#chart3 {
+    float: left;
+    margin-top: 50px;
+    margin-left: 20px;
+}
+/* #chart4 {
     position: relative;
     margin-top: 30px;
     margin-left: 20px;
