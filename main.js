@@ -1,7 +1,7 @@
 var width = 500;
 var height = 500;
 
-d3.csv("datasets/TransportationFatalities_ByYear_postoncanvas.csv", function (csv) {
+d3.csv("trafficDataSet.csv", function (csv) {
     for (var i = 0; i < csv.length; ++i) {
         csv[i].Car_Occupant = Number(csv[i].Car_Occupant)
         csv[i].Pedestrian = Number(csv[i].Pedestrian);
