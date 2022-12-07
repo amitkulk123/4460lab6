@@ -50,9 +50,8 @@ d3.csv("trafficDataSet.csv", function (csv) {
     var yAxis = d3.axisLeft().scale(yScale);
 
     var line = d3.line()
-			.x(function(d){ return x(d.Car_Occupant); })
-			.y(function(d){ return y(d.Year); })
-			.curve(d3.curveCardinal);
+        .x(function(d) { return xScale(d.Car_Occupant); })
+        .y(function(d) { return yScale(d.Year); });
 
     //Create SVGs for charts
     var chart1 = d3
@@ -82,9 +81,9 @@ d3.csv("trafficDataSet.csv", function (csv) {
     .style("text-anchor", "end");
 
     chart1.append("path")
-    .attr("class","line")
-    .attr("d",function(d){ return line(); })
-
+            .datum(csv)
+            .attr("class", "line")
+            .attr("d", line);
 });
 
 // Create an update function for the axis that will scale the axis based on the data
