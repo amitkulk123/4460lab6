@@ -221,6 +221,9 @@ d3.csv("trafficDataSet.csv", function (csv) {
       .style("stroke-width", "1px")
       .style("opacity", "0");
     
+    mousePerLine.append("text")
+      .attr("transform", "translate(10,3)");
+    
       mouseG.append('svg:rect') // append a rect to catch mouse movements on canvas
       .attr('width', width) // can't catch mouse events on a g element
       .attr('height', height)
