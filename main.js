@@ -1,29 +1,21 @@
+// Global function called when the button is clicked
+function onCategoryChanged() {
+
+}
+
 var width = 600;
 var height = 400;
 
 d3.csv("datasets/TransportationFatalities_ByYear_postoncanvas.csv", function (csv) {
-    // if the #yearly radio button is selected, filter the data to only include yearly data
-    // otherwise, filter the data to include the 100k data
-    // if (d3.select("#yearly").property("checked")) {
-    //     csv = csv.filter(function (row) {
-    //         return row["Year"] !== "100k";
-    //     });
-    // } else {
-    //     csv = csv.filter(function (row) {
-    //         return row["Year"] === "100k";
-    //     });
-    // }
-
-
     //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     // Axis setup
     var xScale = d3.scaleTime().domain(d3.extent(csv, function(d) {
         // console.log(d.Year)
         return d3.timeParse("%Y")(d.Year);
     })).range([50, width-30]);
-    var yScale = d3.scaleLinear().domain(d3.extent(csv, function(d) {
+    var yScale = d3.scaleLinear().domain([0, (d3.max(csv, function(d) {
         return d.Car_Occupant;
-    })).range([height-30, 30]);
+    }))]).range([height-30, 30]);
     
     var xAxis = d3.axisBottom().scale(xScale);
     var yAxis = d3.axisLeft().scale(yScale);
@@ -62,23 +54,77 @@ d3.csv("datasets/TransportationFatalities_ByYear_postoncanvas.csv", function (cs
     chart1.append("path")
     .datum(csv)
     .attr("fill", "none")
-    .attr("stroke", "brown")
+    .attr("stroke", "red")
     .attr("stroke-width", 1.5)
     .attr("d", d3.line()
         .x(function(d) { 
-            console.log(xScale(d.Year))
             return xScale(d3.timeParse("%Y")(d.Year)) 
         })
         .y(function(d) { 
-            console.log(yScale(d.Car_Occupant))
             return yScale(d.Car_Occupant) 
         }))
 
+    // append the pedestrian data points to the chart as a line graph
+    chart1.append("path")
+    .datum(csv)
+    .attr("fill", "none")
+    .attr("stroke", "green")
+    .attr("stroke-width", 1.5)
+    .attr("d", d3.line()
+        .x(function(d) {
+            return xScale(d3.timeParse("%Y")(d.Year))
+        })
+        .y(function(d) {
+            return yScale(d.Pedestrian)
+        }))
+
+    // append the motorcycle data points to the chart as a line graph
+    chart1.append("path")
+    .datum(csv)
+    .attr("fill", "none")
+    .attr("stroke", "pink")
+    .attr("stroke-width", 1.5)
+    .attr("d", d3.line()
+        .x(function(d) {
+            return xScale(d3.timeParse("%Y")(d.Year))
+        })
+        .y(function(d) {
+            return yScale(d.Motorcycle)
+        }))
+    
+    // append the bicycle data points to the chart as a line graph
+    chart1.append("path")
+    .datum(csv)
+    .attr("fill", "none")
+    .attr("stroke", "blue")
+    .attr("stroke-width", 1.5)
+    .attr("d", d3.line()
+        .x(function(d) {
+            return xScale(d3.timeParse("%Y")(d.Year))
+        })
+        .y(function(d) {
+            return yScale(d.Bicycle)
+        }))
+
+    // append the truck data points to the chart as a line graph
+    chart1.append("path")
+    .datum(csv)
+    .attr("fill", "none")
+    .attr("stroke", "brown")
+    .attr("stroke-width", 1.5)
+    .attr("d", d3.line()
+        .x(function(d) {
+            return xScale(d3.timeParse("%Y")(d.Year))
+        })
+        .y(function(d) {
+            return yScale(d.Trucks)
+        }))
 
     // // Add filter button
     d3.select('#chart2')
         .append('p')
         .append('button')
+        .attr('id', 'filterButton')
         .style("border", "1px solid black")
         .text('Filter Data')
         .on('click', function() {
