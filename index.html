@@ -15,28 +15,30 @@
 			<div id="chart1">
 	    	</div>
 		  	<div id="chart2">
-                <div class="filter">
+                <div class="filterMode">
 					<label for="filter">Mode of Transportation:</label><br/>
 					<!-- Add a checkbox for Cars, Pedestrian, Motorcycle, Bicycle, Trucks -->
 					<input type="checkbox" id="cars" name="cars" value="cars" checked>
 					<label for="cars">Cars</label><br>
-					<input type="checkbox" id="pedestrian" name="pedestrian" value="pedestrian" checked>
+					<input type="checkbox" id="pedestrians" name="pedestrian" value="pedestrian" checked>
 					<label for="pedestrian">Pedestrian</label><br>
-					<input type="checkbox" id="motorcycle" name="motorcycle" value="motorcycle" checked>
+					<input type="checkbox" id="motorcycles" name="motorcycle" value="motorcycle" checked>
 					<label for="motorcycle">Motorcycle</label><br>
-					<input type="checkbox" id="bicycle" name="bicycle" value="bicycle" checked>
+					<input type="checkbox" id="bicycles" name="bicycle" value="bicycle" checked>
 					<label for="bicycle">Bicycle</label><br>
-					<input type="checkbox" id="truck" name="truck" value="truck" checked>
+					<input type="checkbox" id="trucks" name="truck" value="truck" checked>
 					<label for="truck">Truck</label><br>
-				</div>
+				</div><br/>
+
+				<div class="filterView">
+					<!-- Create toggable input between 100k and yearly -->
+					<label for="filter">View:</label><br/>
+					<input type="radio" id="yearly" name="mode" value="yearly" checked>
+					<label for="yearly">Yearly</label><br>
+					<input type="radio" id="hundredk" name="mode" value="100k">
+					<label for="100k">100k</label><br>
+				</div><br/>
 	        </div>
-			<div id="chart3">
-				<!-- Create toggable input between 100k and yearly -->
-				<input type="radio" id="yearly" name="yearly" value="yearly" checked>
-				<label for="yearly">Yearly</label><br>
-				<input type="radio" id="100k" name="100k" value="100k">
-				<label for="100k">100k</label><br>
-			</div>
 			<!-- <div id="chart3">
 				<strong>Low Calorie:</strong> <svg id="LowCalorie" width="20px" height="12px"></svg><br />
 		  		<strong>Medium Calorie:</strong> <svg id="MedCalorie" width="20px" height="12px"></svg><br />
