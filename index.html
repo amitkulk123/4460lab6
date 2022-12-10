@@ -20,6 +20,8 @@
 					<fieldset>
 						<legend>Mode of Transportation</legend>
 						<!-- Add a checkbox for Cars, Pedestrian, Motorcycle, Bicycle, Trucks -->
+						<input type="checkbox" id="totals" name="totals" value="totals" checked>
+						<label for="totals" style="color: black">Totals</label><br>
 						<input type="checkbox" id="cars" name="cars" value="cars" checked>
 						<label for="cars" style="color: red">Cars</label><br>
 						<input type="checkbox" id="pedestrians" name="pedestrian" value="pedestrian" checked>
@@ -35,9 +37,9 @@
 					<!-- Create toggable input between 100k and yearly -->
 					<fieldset>
 						<legend>View</legend>
-						<input type="radio" id="yearly" name="mode" value="yearly" checked>
+						<input type="radio" id="yearly" name="mode" value="yearly">
 						<label for="yearly">Yearly</label><br>
-						<input type="radio" id="hundredk" name="mode" value="100k">
+						<input type="radio" id="hundredk" name="mode" value="100k" checked>
 						<label for="100k">100k</label><br>
 					</fieldset>
 				</div>
