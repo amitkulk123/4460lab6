@@ -1,5 +1,6 @@
 body {
     font: 12px sans-serif;
+    background-color: #606060;
 }
 
 h2 {
@@ -55,3 +56,15 @@ h2 {
     margin-top: 30px;
     margin-left: 20px;
 } */
+
+.axisWhite line{
+    stroke: white;
+}
+  
+.axisWhite path{
+    stroke: white;
+}
+  
+.axisWhite text{
+    fill: white;
+}  

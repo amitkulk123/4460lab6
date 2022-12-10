@@ -10,8 +10,8 @@ var margin = {
     left: 50
 }
 
-var width = 800;
-var height = 500;
+var width = 1000;
+var height = 750;
 
 d3.csv("trafficDataSet.csv", function (csv) {
     for (var i = 0; i < csv.length; ++i) {
@@ -81,6 +81,7 @@ d3.csv("trafficDataSet.csv", function (csv) {
     // Create labels for the chart
     chart1 // or something else that selects the SVG element in your visualizations
     .append("g") // create a group node
+    .attr("class", "axisWhite")
     .attr("transform", "translate(0," + (height - 30) + ")")
     .call(xAxis) // call the axis generator
     .append("text")
@@ -91,6 +92,7 @@ d3.csv("trafficDataSet.csv", function (csv) {
 
     chart1 // or something else that selects the SVG element in your visualizations
     .append("g") // create a group node
+    .attr("class", "axisWhite")
     .attr("transform", "translate(50, 0)")
     .call(yAxis)
     .append("text")
@@ -195,8 +197,9 @@ d3.csv("trafficDataSet.csv", function (csv) {
 
     svg.append("text")
         .attr("class", "x label")
+        .attr("fill", "white")
         .attr("text-anchor", "end")
-        .attr("x", width - 375)
+        .attr("x", width - 400)
         .attr("y", height - 5)
         .text("Year");
     
@@ -214,7 +217,7 @@ d3.csv("trafficDataSet.csv", function (csv) {
   
     mouseG.append("path") // this is the black vertical line to follow mouse
         .attr("class", "mouse-line")
-        .style("stroke", "black")
+        .style("stroke", "white")
         .style("stroke-width", "1px")
         .style("opacity", "0");
         
