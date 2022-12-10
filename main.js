@@ -4,14 +4,14 @@ function onCategoryChanged() {
 }
 
 var margin = {
-    top: 20,
+    top: 200,
     right: 80,
     bottom: 30,
     left: 50
 }
 
-var width = 600;
-var height = 400;
+var width = 800;
+var height = 500;
 
 d3.csv("trafficDataSet.csv", function (csv) {
     for (var i = 0; i < csv.length; ++i) {
@@ -68,7 +68,7 @@ d3.csv("trafficDataSet.csv", function (csv) {
 
     var line = d3.line()
         .x(function(d) { return xScale(d.Car_Occupant); })
-        .y(function(d) { return yScale(d.Year); });
+        .y(function(d) { return yScale(d.Year); })
 
     //Create SVGs for charts
     var chart1 = d3
@@ -86,7 +86,7 @@ d3.csv("trafficDataSet.csv", function (csv) {
     .append("text")
     .attr("class", "label")
     .attr("x", width - 16)
-    .attr("y", -6)
+    .attr("y", -20)
     .style("text-anchor", "end")
 
     chart1 // or something else that selects the SVG element in your visualizations
@@ -191,12 +191,24 @@ d3.csv("trafficDataSet.csv", function (csv) {
         });
     
     
-    var svg = d3.select("body").append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-        .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+    var svg = d3.select("body").select("svg")
+
+    svg.append("text")
+        .attr("class", "x label")
+        .attr("text-anchor", "end")
+        .attr("x", width - 375)
+        .attr("y", height - 5)
+        .text("Year");
     
+    svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "end")
+        .attr("y", 9)
+        .attr("dy", ".99em")
+        .attr("transform", "translate(45,200)")
+        .attr("transform", "rotate(90)")
+        .text("Number of Incidents");
+
     var mouseG = chart1.append("g")
         .attr("class", "mouse-over-effects");
   
@@ -219,7 +231,7 @@ d3.csv("trafficDataSet.csv", function (csv) {
       .style("stroke", "red")
       .style("fill", "none")
       .style("stroke-width", "1px")
-      .style("opacity", "0");
+      .style("opacity", "0")
     
     mousePerLine.append("text")
       .attr("transform", "translate(10,3)");
@@ -259,7 +271,7 @@ d3.csv("trafficDataSet.csv", function (csv) {
             console.log(width/mouse[0])
             var xDate = xScale.invert(mouse[0]),
                 bisect = d3.bisector(function(d) { return d.Year; }).right;
-                idx = bisect(d.Car_Occupant, xDate);
+                idx = bisect(d.Pedestrian, xDate);
             
             var beginning = 0,
                 end = lines[i].getTotalLength(),
