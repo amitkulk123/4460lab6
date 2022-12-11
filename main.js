@@ -30,13 +30,6 @@ var height = 400;
 var xScale;
 var yScale;
 
-// chart1 = d3
-// .select("#chart1")
-// .append("svg:svg")
-// .attr("id", "svg1")
-// .attr("width", width)
-// .attr("height", height);
-
 var data;
 var svg = d3.select('svg');
 var chart1 = svg.append('g');
@@ -168,5 +161,104 @@ function updateChart(filter) {
             }
         })
     }
+
+
+    // add a mouseover event to the chart that will show the data points for each line
+    var mouseG = chart1.append("g").attr("class", "mouse-hover");
+
+    mouseG.append("path")
+    .attr("class", "mouse-line")
+    .style("stroke", "black")
+    .style("stroke-width", "1px")
+    .style("opacity", "0");
+
+    var mousePerLine = mouseG.selectAll('.mouse-per-line')
+    .data(modes)
+    .enter()
+    .append("g")
+    .attr("class", "mouse-per-line");
+
+    mousePerLine.append("circle")
+    .attr("r", 7)
+    .style("stroke", "black")
+    .style("fill", "none")
+    .style("stroke-width", "1px")
+    .style("opacity", "0");
+
+    mousePerLine.append("text")
+    .attr("transform", "translate(10,3)");
+
+    mouseG.append('svg:rect')
+    .attr('width', (width - 30))
+    .attr('height', (height))
+    .attr('fill', 'none')
+    .attr('pointer-events', 'all')
+    .on('mouseout', function() {
+        d3.select(".mouse-line")
+        .style("opacity", "0");
+        d3.selectAll(".mouse-per-line circle")
+        .style("opacity", "0");
+        d3.selectAll(".mouse-per-line text")
+        .style("opacity", "0");
+    })
+    .on('mouseover', function() {
+        d3.select(".mouse-line")
+        .style("opacity", "1")
+        d3.selectAll(".mouse-per-line circle")
+        .style("opacity", "1");
+        d3.selectAll(".mouse-per-line text")
+        .style("opacity", "1");
+    })
+    // it seems like the mousemove event is not working properly
+    .on('mousemove', function() {
+        var lines = document.getElementsByClassName('line');
+        console.log(lines);
+        var mouse = d3.mouse(this);
+        d3.select(".mouse-line")
+        .attr("d", function() {
+            var d = "M" + mouse[0] + "," + height;
+            d += " " + mouse[0] + "," + 0;
+            return d;
+        });
+        d3.selectAll(".mouse-per-line")
+        .attr("transform", function(d, i) {
+            var xDate = xScale.invert(mouse[0]),
+            bisect = d3.bisector(function(d) { return d.Year; }).right;
+            idx = bisect(d, xDate);
+
+            var beginning = 0;
+            // end should not be undefined
+            var end = lines[i].getTotalLength();
+            // if(lines[i].getTotalLength() != undefined) {
+            //     end = lines[i].getTotalLength();
+            // } else {
+            //     end = 0;
+            // }
+            var target = null;
+
+            while (true) {
+                target = Math.floor((beginning + end) / 2);
+                var pos = lines[i].getPointAtLength(target)
+                // if(lines[i].getPointAtLength(target) != undefined) {
+                //     pos = lines[i].getPointAtLength(target);
+                // } else {
+                //     pos = 0;
+                // }
+                if ((target === end || target === beginning) && pos.x !== mouse[0]) {
+                    break;
+                }
+                if (pos.x > mouse[0])      end = target;
+                else if (pos.x < mouse[0]) beginning = target;
+                else break;
+            }
+
+            d3.select(this).select('text')
+            .text(yScale.invert(pos.y).toFixed(2));
+
+            return "translate(" + mouse[0] + "," + pos.y +")";
+        });
+});
+
+
 
 }
