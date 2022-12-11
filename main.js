@@ -92,9 +92,6 @@ function addAxes(modes) {
 
     // Create labels for the chart
 
-    // var graph = chart1.selectAll('.y-axis').data(data)
-    // var chartGEnter = graph.enter()
-
     // append x-axis
     chart1 // or something else that selects the SVG element in your visualizations
     .append("g") // create a group node
@@ -140,7 +137,10 @@ function updateChart(filter) {
     })
     console.log(modes);
     
-    // append the total data points to the chart as a line graph only if the checkbox is checked, otherwise remove it        
+    // append the total data points to the chart as a line graph only if the checkbox is checked, otherwise remove it  
+    
+    chart1.selectAll('.line').remove();
+
     if(filter.includes('Total_Per_100K')) {
         chart1.selectAll('.totals').remove()
         chart1.append("path")
@@ -153,17 +153,12 @@ function updateChart(filter) {
             .y(function(d) {
                 return yScale(d.Total_Per_100K)
             }))
-    } else {
-        chart1.selectAll('.totals').remove()
-    }
-
+    } 
+    
     if(filter.includes('Car_Per_100K')) {
         chart1.selectAll('.cars').remove()
         chart1.append("path")
         .datum(modes)
-        // .attr("fill", "none")
-        // .attr("stroke", "red")
-        // .attr("stroke-width", 1.5)
         .attr("class", "cars line")
         .attr("d", d3.line()
             .x(function(d) {
@@ -172,9 +167,7 @@ function updateChart(filter) {
             .y(function(d) {
                 return yScale(d.Car_Per_100K)
             }))
-    } else {
-        chart1.selectAll('.cars').remove()
-    }
+    } 
 
     if(filter.includes('Ped_Per_100K')) {
         chart1.selectAll('.pedestrians').remove()
@@ -188,8 +181,6 @@ function updateChart(filter) {
             .y(function(d) {
                 return yScale(d.Ped_Per_100K)
             }))
-    } else {
-        chart1.selectAll('.pedestrians').remove()
     }
 
     if(filter.includes('Motorcycle_Per_100K')) {
@@ -204,9 +195,7 @@ function updateChart(filter) {
             .y(function(d) {
                 return yScale(d.Motorcycle_Per_100K)
             }))
-    } else {
-        chart1.selectAll('.motorcycles').remove()
-    }
+    } 
 
     if(filter.includes('Bicycle_Per_100K')) {
         chart1.selectAll('.bicycles').remove()
@@ -220,9 +209,7 @@ function updateChart(filter) {
             .y(function(d) {
                 return yScale(d.Bicycle_Per_100K)
             }))
-    } else {
-        chart1.selectAll('.bicycles').remove()
-    }
+    } 
 
     if(filter.includes('Trucks_Per_100K')) {
         chart1.selectAll('.trucks').remove()
@@ -236,7 +223,5 @@ function updateChart(filter) {
             .y(function(d) {
                 return yScale(d.Trucks_Per_100K)
             }))
-    } else {
-        chart1.selectAll('.trucks').remove()
-    }
+    } 
 }
