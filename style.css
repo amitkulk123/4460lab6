@@ -1,23 +1,6 @@
 body {
     font: 12px sans-serif;
 }
-/* #legend {
-    font: 12px sans-serif;
-}
-
-.tick > line {
-    fill: none;
-    stroke: black;
-}
-.tick > text {
-    fill: black;
-} */
-
-/* path.domain {
-    fill: none;
-    stroke-width: 2px;
-    stroke: black;
-} */
 
 #wrapper {
     clear:both;
@@ -35,8 +18,33 @@ body {
     margin-top: 30px;
     margin-left: 20px;
 }
-/* #chart4 {
-    position: relative;
-    margin-top: 30px;
-    margin-left: 20px;
-} */
+
+.line {
+    stroke-width: 1.5px;
+    fill: none;
+}
+
+.totals {
+    color: black;
+    stroke: black;
+}
+.cars {
+    color: red;
+    stroke: red;
+}
+.pedestrians {
+    color: green;
+    stroke: green;
+}
+.motorcycles {
+    color: pink;
+    stroke: pink;
+}
+.bicycles {
+    color: blue;
+    stroke: blue;
+}
+.trucks {
+    color: brown;
+    stroke: brown;
+}
