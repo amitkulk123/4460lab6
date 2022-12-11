@@ -212,7 +212,6 @@ function updateChart(filter) {
     // it seems like the mousemove event is not working properly
     .on('mousemove', function() {
         var lines = document.getElementsByClassName('line');
-        console.log(lines);
         var mouse = d3.mouse(this);
         d3.select(".mouse-line")
         .attr("d", function() {
@@ -220,15 +219,21 @@ function updateChart(filter) {
             d += " " + mouse[0] + "," + 0;
             return d;
         });
-        d3.selectAll(".mouse-per-line")
-        .attr("transform", function(d, i) {
+        
+            d3.selectAll(".mouse-per-line")
+            .attr("transform", function(d, i) {
             var xDate = xScale.invert(mouse[0]),
             bisect = d3.bisector(function(d) { return d.Year; }).right;
             idx = bisect(d, xDate);
 
             var beginning = 0;
+            var end;
             // end should not be undefined
-            var end = lines[i].getTotalLength();
+            try {
+                end = lines[i].getTotalLength();
+            } catch (TypeError) {
+                end = 0;
+            }
             // if(lines[i].getTotalLength() != undefined) {
             //     end = lines[i].getTotalLength();
             // } else {
@@ -238,7 +243,12 @@ function updateChart(filter) {
 
             while (true) {
                 target = Math.floor((beginning + end) / 2);
-                var pos = lines[i].getPointAtLength(target)
+                var pos;
+                try {
+                    pos = lines[i].getPointAtLength(target)
+                } catch (TypeError) {
+                    pos = 0;
+                }
                 // if(lines[i].getPointAtLength(target) != undefined) {
                 //     pos = lines[i].getPointAtLength(target);
                 // } else {
@@ -255,8 +265,13 @@ function updateChart(filter) {
             d3.select(this).select('text')
             .text(yScale.invert(pos.y).toFixed(2));
 
-            return "translate(" + mouse[0] + "," + pos.y +")";
+            if (pos.y == undefined) {
+                return;
+            }  else {
+                return "translate(" + mouse[0] + "," + pos.y +")";
+            }
         });
+            
 });
 
 
