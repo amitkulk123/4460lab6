@@ -35,8 +35,33 @@ body {
     margin-top: 30px;
     margin-left: 20px;
 }
-/* #chart4 {
-    position: relative;
-    margin-top: 30px;
-    margin-left: 20px;
-} */
+
+.line {
+    stroke-width: 1.5px;
+    fill: none;
+}
+
+.totals {
+    color: black;
+    stroke: black;
+}
+.cars {
+    color: red;
+    stroke: red;
+}
+.pedestrians {
+    color: green;
+    stroke: green;
+}
+.motorcycles {
+    color: pink;
+    stroke: pink;
+}
+.bicycles {
+    color: blue;
+    stroke: blue;
+}
+.trucks {
+    color: brown;
+    stroke: brown;
+}

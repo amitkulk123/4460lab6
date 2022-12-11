@@ -64,30 +64,36 @@ d3.csv("datasets/TransportationFatalities_ByYear_postoncanvas.csv", function (cs
         onCategoryChanged();
     });
 
-    addAxes(data);
     updateChart(initialFilter);
 });
 
-function addAxes(filter) {
+function addAxes(modes) {
     // Axis setup
     xScale = d3.scaleTime().domain(d3.extent(data, function(d) { 
         return d3.timeParse("%Y")(d.Year);
     })).range([50, width-30]);
-    yScale = d3.scaleLinear().domain([0, (
-        d3.max(data, function(d) {
-            return d3.max(filter, function(key) {
+    yScale = d3.scaleLinear().domain([
+        (d3.min(modes, function(d) {
+                return d3.min(Object.keys(d), function(key) {
+                    // return d[key];
+                    return +d[key];
+                })
+        })),
+        (d3.max(modes, function(d) {
+            return d3.max(Object.keys(d), function(key) {
+                // return d[key];
                 return +d[key];
-            });
-        })
-    )]).range([height-30, 30]);
+            })
+        }))
+    ]).range([height-30, 30]);
 
     var xAxis = d3.axisBottom().scale(xScale);
     var yAxis = d3.axisLeft().scale(yScale);
 
     // Create labels for the chart
 
-    var graph = chart1.selectAll('.y-axis').data(data)
-    var chartGEnter = graph.enter()
+    // var graph = chart1.selectAll('.y-axis').data(data)
+    // var chartGEnter = graph.enter()
 
     // append x-axis
     chart1 // or something else that selects the SVG element in your visualizations
@@ -100,7 +106,9 @@ function addAxes(filter) {
     .attr("y", -6)
     .style("text-anchor", "end")
 
-    chartGEnter 
+    var chart1Enter = chart1.selectAll('.y-axis').data(data)
+
+    chart1Enter.enter()
     .append("g") // create a group node
     .attr("class", "axis-label y-axis")
     .attr("transform", "translate(50, 0)")
@@ -110,99 +118,125 @@ function addAxes(filter) {
     .append("text")
     .attr("y", 6)
     .attr("dy", ".71em")
-    .style("text-anchor", "end");
+    .style("text-anchor", "end")
 
-    graph.exit().remove();
+    chart1Enter.exit().remove();
 }
 
 function updateChart(filter) {
-    var modes = [];
-    console.log(filter);
-
-    addAxes(filter);
+    var modes = data.map(item =>
+        filter.reduce((acc, key) => {
+            acc[key] = item[key];
+            return acc;
+        }, {})
+    )
     
+    addAxes(modes);
 
-    // append the total data points to the chart as a line graph
-    chart1.append("path")
-    .datum(data)
-    .attr("fill", "none")
-    .attr("stroke", "black")
-    .attr("stroke-width", 1.5)
-    .attr("d", d3.line()
-        .x(function(d) { 
-            return xScale(d3.timeParse("%Y")(d.Year)) 
-        })
-        .y(function(d) { 
-            return yScale(d.Total_Per_100K) 
-        }))
-
-    // append the car data points to the chart as a line graph
-    chart1.append("path")
-    .datum(data)
-    .attr("fill", "none")
-    .attr("stroke", "red")
-    .attr("stroke-width", 1.5)
-    .attr("d", d3.line()
-        .x(function(d) {
-            return xScale(d3.timeParse("%Y")(d.Year))
-        })
-        .y(function(d) {
-            return yScale(d.Car_Per_100K)
-        }))
-
-    // append the pedestrian data points to the chart as a line graph
-    chart1.append("path")
-    .datum(data)
-    .attr("fill", "none")
-    .attr("stroke", "green")
-    .attr("stroke-width", 1.5)
-    .attr("d", d3.line()
-        .x(function(d) {
-            return xScale(d3.timeParse("%Y")(d.Year))
-        })
-        .y(function(d) {
-            return yScale(d.Ped_Per_100K)
-        }))
-
-    // append the motorcycle data points to the chart as a line graph
-    chart1.append("path")
-    .datum(data)
-    .attr("fill", "none")
-    .attr("stroke", "pink")
-    .attr("stroke-width", 1.5)
-    .attr("d", d3.line()
-        .x(function(d) {
-            return xScale(d3.timeParse("%Y")(d.Year))
-        })
-        .y(function(d) {
-            return yScale(d.Motorcycle_Per_100K)
-        }))
+    // add the year to modes after the axes are updated 
+    modes = modes.map(function(d, i) {
+        d.Year = data[i].Year;
+        return d;
+    })
+    console.log(modes);
     
-    // append the bicycle data points to the chart as a line graph
-    chart1.append("path")
-    .datum(data)
-    .attr("fill", "none")
-    .attr("stroke", "blue")
-    .attr("stroke-width", 1.5)
-    .attr("d", d3.line()
-        .x(function(d) {
-            return xScale(d3.timeParse("%Y")(d.Year))
-        })
-        .y(function(d) {
-            return yScale(d.Bicycle_Per_100K)
-        }))
+    // append the total data points to the chart as a line graph only if the checkbox is checked, otherwise remove it        
+    if(filter.includes('Total_Per_100K')) {
+        chart1.selectAll('.totals').remove()
+        chart1.append("path")
+        .datum(modes)
+        .attr("class", "totals line")
+        .attr("d", d3.line()
+            .x(function(d) {
+                return xScale(d3.timeParse("%Y")(d.Year))
+            })
+            .y(function(d) {
+                return yScale(d.Total_Per_100K)
+            }))
+    } else {
+        chart1.selectAll('.totals').remove()
+    }
 
-    // append the truck data points to the chart as a line graph
-    chart1.append("path")
-    .datum(data)
-    .attr("fill", "none")
-    .attr("stroke", "brown")
-    .attr("stroke-width", 1.5)
-    .attr("d", d3.line()
-        .x(function(d) {
-            return xScale(d3.timeParse("%Y")(d.Year))
-        })
-        .y(function(d) {
-            return yScale(d.Trucks_Per_100K)
-        }))
+    if(filter.includes('Car_Per_100K')) {
+        chart1.selectAll('.cars').remove()
+        chart1.append("path")
+        .datum(modes)
+        // .attr("fill", "none")
+        // .attr("stroke", "red")
+        // .attr("stroke-width", 1.5)
+        .attr("class", "cars line")
+        .attr("d", d3.line()
+            .x(function(d) {
+                return xScale(d3.timeParse("%Y")(d.Year))
+            })
+            .y(function(d) {
+                return yScale(d.Car_Per_100K)
+            }))
+    } else {
+        chart1.selectAll('.cars').remove()
+    }
+
+    if(filter.includes('Ped_Per_100K')) {
+        chart1.selectAll('.pedestrians').remove()
+        chart1.append("path")
+        .datum(modes)
+        .attr("class", "pedestrians line")
+        .attr("d", d3.line()
+            .x(function(d) {
+                return xScale(d3.timeParse("%Y")(d.Year))
+            })
+            .y(function(d) {
+                return yScale(d.Ped_Per_100K)
+            }))
+    } else {
+        chart1.selectAll('.pedestrians').remove()
+    }
+
+    if(filter.includes('Motorcycle_Per_100K')) {
+        chart1.selectAll('.motorcycles').remove()
+        chart1.append("path")
+        .datum(modes)
+        .attr("class", "motorcycles line")
+        .attr("d", d3.line()
+            .x(function(d) {
+                return xScale(d3.timeParse("%Y")(d.Year))
+            })
+            .y(function(d) {
+                return yScale(d.Motorcycle_Per_100K)
+            }))
+    } else {
+        chart1.selectAll('.motorcycles').remove()
+    }
+
+    if(filter.includes('Bicycle_Per_100K')) {
+        chart1.selectAll('.bicycles').remove()
+        chart1.append("path")
+        .datum(modes)
+        .attr("class", "bicycles line")
+        .attr("d", d3.line()
+            .x(function(d) {
+                return xScale(d3.timeParse("%Y")(d.Year))
+            })
+            .y(function(d) {
+                return yScale(d.Bicycle_Per_100K)
+            }))
+    } else {
+        chart1.selectAll('.bicycles').remove()
+    }
+
+    if(filter.includes('Trucks_Per_100K')) {
+        chart1.selectAll('.trucks').remove()
+        chart1.append("path")
+        .datum(modes)
+        .attr("class", "trucks line")
+        .attr("d", d3.line()
+            .x(function(d) {
+                return xScale(d3.timeParse("%Y")(d.Year))
+            })
+            .y(function(d) {
+                return yScale(d.Trucks_Per_100K)
+            }))
+    } else {
+        chart1.selectAll('.trucks').remove()
+    }
 }
