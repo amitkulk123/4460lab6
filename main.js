@@ -138,90 +138,35 @@ function updateChart(filter) {
     console.log(modes);
     
     // append the total data points to the chart as a line graph only if the checkbox is checked, otherwise remove it  
-    
     chart1.selectAll('.line').remove();
 
-    if(filter.includes('Total_Per_100K')) {
-        chart1.selectAll('.totals').remove()
-        chart1.append("path")
-        .datum(modes)
-        .attr("class", "totals line")
-        .attr("d", d3.line()
-            .x(function(d) {
-                return xScale(d3.timeParse("%Y")(d.Year))
-            })
-            .y(function(d) {
-                return yScale(d.Total_Per_100K)
-            }))
-    } 
-    
-    if(filter.includes('Car_Per_100K')) {
-        chart1.selectAll('.cars').remove()
-        chart1.append("path")
-        .datum(modes)
-        .attr("class", "cars line")
-        .attr("d", d3.line()
-            .x(function(d) {
-                return xScale(d3.timeParse("%Y")(d.Year))
-            })
-            .y(function(d) {
-                return yScale(d.Car_Per_100K)
-            }))
-    } 
+    for(var i = 0; i < filter.length; i++) {
+        var line = d3.line()
+        .x(function(d) {
+            return xScale(d3.timeParse("%Y")(d.Year));
+        })
+        .y(function(d) {
+            return yScale(+d[filter[i]]);
+        });
 
-    if(filter.includes('Ped_Per_100K')) {
-        chart1.selectAll('.pedestrians').remove()
         chart1.append("path")
         .datum(modes)
-        .attr("class", "pedestrians line")
-        .attr("d", d3.line()
-            .x(function(d) {
-                return xScale(d3.timeParse("%Y")(d.Year))
-            })
-            .y(function(d) {
-                return yScale(d.Ped_Per_100K)
-            }))
+        .attr("d", line)
+        .attr("class", function() {
+            if(filter[i] == "Total_Per_100K") {
+                return "totals line"
+            } else if(filter[i] == "Car_Per_100K") {
+                return "cars line"
+            } else if(filter[i] == "Ped_Per_100K") {
+                return "pedestrians line"
+            } else if(filter[i] == "Motorcycle_Per_100K") {
+                return "motorcycles line"
+            } else if(filter[i] == "Bicycle_Per_100K") {
+                return "bicycles line"
+            } else if(filter[i] == "Trucks_Per_100K") {
+                return "trucks line"
+            }
+        })
     }
 
-    if(filter.includes('Motorcycle_Per_100K')) {
-        chart1.selectAll('.motorcycles').remove()
-        chart1.append("path")
-        .datum(modes)
-        .attr("class", "motorcycles line")
-        .attr("d", d3.line()
-            .x(function(d) {
-                return xScale(d3.timeParse("%Y")(d.Year))
-            })
-            .y(function(d) {
-                return yScale(d.Motorcycle_Per_100K)
-            }))
-    } 
-
-    if(filter.includes('Bicycle_Per_100K')) {
-        chart1.selectAll('.bicycles').remove()
-        chart1.append("path")
-        .datum(modes)
-        .attr("class", "bicycles line")
-        .attr("d", d3.line()
-            .x(function(d) {
-                return xScale(d3.timeParse("%Y")(d.Year))
-            })
-            .y(function(d) {
-                return yScale(d.Bicycle_Per_100K)
-            }))
-    } 
-
-    if(filter.includes('Trucks_Per_100K')) {
-        chart1.selectAll('.trucks').remove()
-        chart1.append("path")
-        .datum(modes)
-        .attr("class", "trucks line")
-        .attr("d", d3.line()
-            .x(function(d) {
-                return xScale(d3.timeParse("%Y")(d.Year))
-            })
-            .y(function(d) {
-                return yScale(d.Trucks_Per_100K)
-            }))
-    } 
 }
