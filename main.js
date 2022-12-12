@@ -20,7 +20,12 @@ function onCategoryChanged() {
     if (d3.select("#trucks").property("checked")) {
         filter.push("Trucks_Per_100K");
     }
-    updateChart(filter);
+
+    if(filter.length == 0) {
+        confirm("Please select at least one mode of transportation.")
+    } else {
+        updateChart(filter);
+    }
 }
 
 var width = 600;
@@ -68,13 +73,11 @@ function addAxes(modes) {
     yScale = d3.scaleLinear().domain([
         (d3.min(modes, function(d) {
                 return d3.min(Object.keys(d), function(key) {
-                    // return d[key];
                     return +d[key];
                 })
         })),
         (d3.max(modes, function(d) {
             return d3.max(Object.keys(d), function(key) {
-                // return d[key];
                 return +d[key];
             })
         }))
@@ -234,11 +237,6 @@ function updateChart(filter) {
             } catch (TypeError) {
                 end = 0;
             }
-            // if(lines[i].getTotalLength() != undefined) {
-            //     end = lines[i].getTotalLength();
-            // } else {
-            //     end = 0;
-            // }
             var target = null;
 
             while (true) {
@@ -249,11 +247,6 @@ function updateChart(filter) {
                 } catch (TypeError) {
                     pos = 0;
                 }
-                // if(lines[i].getPointAtLength(target) != undefined) {
-                //     pos = lines[i].getPointAtLength(target);
-                // } else {
-                //     pos = 0;
-                // }
                 if ((target === end || target === beginning) && pos.x !== mouse[0]) {
                     break;
                 }
@@ -262,16 +255,20 @@ function updateChart(filter) {
                 else break;
             }
 
-            d3.select(this).select('text')
+            // check to see if the text is NaN
+            if (isNaN(pos.y) || isNaN(pos.x) || pos.x == undefined || pos.y == undefined) { 
+                return;
+            } else {
+                d3.select(this).select('text')
             .text(yScale.invert(pos.y).toFixed(2));
+            }
 
             if (pos.y == undefined) {
                 return;
             }  else {
                 return "translate(" + mouse[0] + "," + pos.y +")";
             }
-        });
-            
+        });            
 });
 
 
