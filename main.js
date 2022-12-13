@@ -39,7 +39,7 @@ var data;
 var svg = d3.select('svg');
 var chart1 = svg.append('g');
 
-d3.csv("datasets/TransportationFatalities_ByYear_postoncanvas.csv", function (csv) {
+d3.csv("trafficDataSet.csv", function (csv) {
     data = csv;
     
     var initialFilter = ["Total_Per_100K", "Car_Per_100K", "Ped_Per_100K", "Motorcycle_Per_100K", "Bicycle_Per_100K", "Trucks_Per_100K"];
@@ -87,7 +87,14 @@ function addAxes(modes) {
     var yAxis = d3.axisLeft().scale(yScale);
 
     // Create labels for the chart
-    var svg = d3.select("body").select("svg")
+    svg = d3.select("body").select("svg")
+
+    svg.append("text")
+        .attr("class", "x label")
+        .attr("text-anchor", "end")
+        .attr("x", width - 100)
+        .attr("y", 10)
+        .text("Fatality Rates for Different Modes of Transportation Over the Decades");
 
     svg.append("text")
         .attr("class", "x label")
@@ -148,7 +155,6 @@ function updateChart(filter) {
         d.Year = data[i].Year;
         return d;
     })
-    console.log(modes);
     
     // append the total data points to the chart as a line graph only if the checkbox is checked, otherwise remove it  
     chart1.selectAll('.line').remove();
