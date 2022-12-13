@@ -87,6 +87,23 @@ function addAxes(modes) {
     var yAxis = d3.axisLeft().scale(yScale);
 
     // Create labels for the chart
+    var svg = d3.select("body").select("svg")
+
+    svg.append("text")
+        .attr("class", "x label")
+        .attr("text-anchor", "end")
+        .attr("x", width - 300)
+        .attr("y", height)
+        .text("Year");
+
+    svg.append("text")
+        .attr("class", "y label")
+        .attr("text-anchor", "end")
+        .attr("x", -100)
+        .attr("y", 6)
+        .attr("dy", ".75em")
+        .attr("transform", "rotate(-90)")
+        .text("Fatality Rate");
 
     // append x-axis
     chart1 // or something else that selects the SVG element in your visualizations
@@ -223,8 +240,8 @@ function updateChart(filter) {
             return d;
         });
         
-            d3.selectAll(".mouse-per-line")
-            .attr("transform", function(d, i) {
+        d3.selectAll(".mouse-per-line")
+        .attr("transform", function(d, i) {
             var xDate = xScale.invert(mouse[0]),
             bisect = d3.bisector(function(d) { return d.Year; }).right;
             idx = bisect(d, xDate);
@@ -255,22 +272,14 @@ function updateChart(filter) {
                 else break;
             }
 
-            // check to see if the text is NaN
+            // check to see if the text is NaN or undefined
             if (isNaN(pos.y) || isNaN(pos.x) || pos.x == undefined || pos.y == undefined) { 
                 return;
             } else {
                 d3.select(this).select('text')
-            .text(yScale.invert(pos.y).toFixed(2));
-            }
-
-            if (pos.y == undefined) {
-                return;
-            }  else {
+                .text(yScale.invert(pos.y).toFixed(2));
                 return "translate(" + mouse[0] + "," + pos.y +")";
             }
         });            
-});
-
-
-
+    });
 }
