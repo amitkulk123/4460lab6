@@ -91,33 +91,33 @@ function addAxes(modes) {
 
     // Adds title to the chart
     svg.append("text")
-    .attr("class", "y label")
+    .attr("class", "title-label")
     .attr("text-anchor", "end")
-    .attr("x", -300)
-    .attr("y", 6)
-    .attr("dy", ".75em")
-    .attr("transform", "rotate(-90)")
+    .attr("x", width - 300)
+    .attr("y", 50)
     .attr("font-weight", "bold")
-    .text("Fatality Rate");
+    .attr("text-decoration", "underline")
+    .text("Fatality Rates (per 100K people) for Different Modes of Transportation");
 
-    // Adds label to the x axis
+    // Add x axis label
     svg.append("text")
-    .attr("class", "x label")
+    .attr("class", "x-label")
     .attr("text-anchor", "end")
     .attr("x", width - 475)
     .attr("y", height)
     .attr("font-weight", "bold")
     .text("Year");
 
-    // Adds label to the y axis
+    // Add y axis label
     svg.append("text")
-    .attr("class", "y label")
+    .attr("class", "y-label")
     .attr("text-anchor", "end")
-    .attr("x", width - 300)
-    .attr("y", 50)
+    .attr("x", -300)
+    .attr("y", 6)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
     .attr("font-weight", "bold")
-    .attr("text-decoration", "underline")
-    .text("Fatality Rates for Different Modes of Transportation Over the Decades");
+    .text("Fatalitities per 100K people");
 
     // append x-axis
     chart1 // or something else that selects the SVG element in your visualizations
@@ -148,6 +148,7 @@ function addAxes(modes) {
 }
 
 function updateChart(filter) {
+    // filter out modes so that it only contains the modes that are checked
     var modes = data.map(item =>
         filter.reduce((acc, key) => {
             acc[key] = item[key];
