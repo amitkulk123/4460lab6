@@ -28,8 +28,8 @@ function onCategoryChanged() {
     }
 }
 
-var width = 600;
-var height = 400;
+var width = 1000;
+var height = 750;
 
 // scales
 var xScale;
@@ -89,28 +89,35 @@ function addAxes(modes) {
     // Create labels for the chart
     svg = d3.select("body").select("svg")
 
+    // Adds title to the chart
     svg.append("text")
-        .attr("class", "x label")
-        .attr("text-anchor", "end")
-        .attr("x", width - 100)
-        .attr("y", 10)
-        .text("Fatality Rates for Different Modes of Transportation Over the Decades");
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("x", -300)
+    .attr("y", 6)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .attr("font-weight", "bold")
+    .text("Fatality Rate");
 
+    // Adds label to the x axis
     svg.append("text")
-        .attr("class", "x label")
-        .attr("text-anchor", "end")
-        .attr("x", width - 300)
-        .attr("y", height)
-        .text("Year");
+    .attr("class", "x label")
+    .attr("text-anchor", "end")
+    .attr("x", width - 475)
+    .attr("y", height)
+    .attr("font-weight", "bold")
+    .text("Year");
 
+    // Adds label to the y axis
     svg.append("text")
-        .attr("class", "y label")
-        .attr("text-anchor", "end")
-        .attr("x", -100)
-        .attr("y", 6)
-        .attr("dy", ".75em")
-        .attr("transform", "rotate(-90)")
-        .text("Fatality Rate");
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("x", width - 300)
+    .attr("y", 50)
+    .attr("font-weight", "bold")
+    .attr("text-decoration", "underline")
+    .text("Fatality Rates for Different Modes of Transportation Over the Decades");
 
     // append x-axis
     chart1 // or something else that selects the SVG element in your visualizations
