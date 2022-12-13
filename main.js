@@ -28,8 +28,8 @@ function onCategoryChanged() {
     }
 }
 
-var width = 600;
-var height = 400;
+var width = 1000;
+var height = 750;
 
 // scales
 var xScale;
@@ -39,7 +39,7 @@ var data;
 var svg = d3.select('svg');
 var chart1 = svg.append('g');
 
-d3.csv("datasets/TransportationFatalities_ByYear_postoncanvas.csv", function (csv) {
+d3.csv("trafficDataSet.csv", function (csv) {
     data = csv;
     
     var initialFilter = ["Total_Per_100K", "Car_Per_100K", "Ped_Per_100K", "Motorcycle_Per_100K", "Bicycle_Per_100K", "Trucks_Per_100K"];
@@ -87,6 +87,37 @@ function addAxes(modes) {
     var yAxis = d3.axisLeft().scale(yScale);
 
     // Create labels for the chart
+    svg = d3.select("body").select("svg")
+
+    // Adds title to the chart
+    svg.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("x", -300)
+    .attr("y", 6)
+    .attr("dy", ".75em")
+    .attr("transform", "rotate(-90)")
+    .attr("font-weight", "bold")
+    .text("Fatality Rate");
+
+    // Adds label to the x axis
+    svg.append("text")
+    .attr("class", "x label")
+    .attr("text-anchor", "end")
+    .attr("x", width - 475)
+    .attr("y", height)
+    .attr("font-weight", "bold")
+    .text("Year");
+
+    // Adds label to the y axis
+    svg.append("text")
+    .attr("class", "y label")
+    .attr("text-anchor", "end")
+    .attr("x", width - 300)
+    .attr("y", 50)
+    .attr("font-weight", "bold")
+    .attr("text-decoration", "underline")
+    .text("Fatality Rates for Different Modes of Transportation Over the Decades");
 
     // append x-axis
     chart1 // or something else that selects the SVG element in your visualizations
@@ -131,7 +162,6 @@ function updateChart(filter) {
         d.Year = data[i].Year;
         return d;
     })
-    console.log(modes);
     
     // append the total data points to the chart as a line graph only if the checkbox is checked, otherwise remove it  
     chart1.selectAll('.line').remove();
@@ -223,8 +253,8 @@ function updateChart(filter) {
             return d;
         });
         
-            d3.selectAll(".mouse-per-line")
-            .attr("transform", function(d, i) {
+        d3.selectAll(".mouse-per-line")
+        .attr("transform", function(d, i) {
             var xDate = xScale.invert(mouse[0]),
             bisect = d3.bisector(function(d) { return d.Year; }).right;
             idx = bisect(d, xDate);
@@ -255,22 +285,14 @@ function updateChart(filter) {
                 else break;
             }
 
-            // check to see if the text is NaN
+            // check to see if the text is NaN or undefined
             if (isNaN(pos.y) || isNaN(pos.x) || pos.x == undefined || pos.y == undefined) { 
                 return;
             } else {
                 d3.select(this).select('text')
-            .text(yScale.invert(pos.y).toFixed(2));
-            }
-
-            if (pos.y == undefined) {
-                return;
-            }  else {
+                .text(yScale.invert(pos.y).toFixed(2));
                 return "translate(" + mouse[0] + "," + pos.y +")";
             }
         });            
-});
-
-
-
+    });
 }
