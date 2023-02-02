@@ -10,6 +10,9 @@ As part of our visualization, we support several user interaction which are as f
 - Filtering data with check boxes so it includes/excludes fatality rates for a particular mode of transportation
 - Hovering on the line chart will display the numerical values for the fatality rates for all current selected modes of transportation 
 
+## Video Demo
+https://youtu.be/M5eJwaCEapE
+
 ## Instructions to Run Code
 In order to run the code, please follow these instructions:
 1. Run the following python command using a terminal: `python -m http.server 8080`
